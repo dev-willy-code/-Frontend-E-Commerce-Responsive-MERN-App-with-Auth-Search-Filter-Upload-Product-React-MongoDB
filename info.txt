@@ -1,0 +1,68 @@
+--------HERRAMIENTAS PRINCIPALES ------------
+MongoDB: https://www.mongodb.com/
+Express: https://expressjs.com/
+React: https://react.dev/
+Nodejs: https://nodejs.org/en
+Redux-Toolkit: https://react-redux.js.org/introducti...
+React Router: https://reactrouter.com/en/main/start...
+Mongoose: https://mongoosejs.com/
+JsonWebToken: https://www.npmjs.com/package/jsonweb...
+Dotenv: https://www.npmjs.com/package/dotenv
+VsCode: https://code.visualstudio.com/
+React icons
+Taiwindcss
+
+material icon theme: para iconos
+ES7+ React/Redux/React-Native snippets  rface(snippet)
+
+-----START REACT PROYECT--------
+npx create-react-app frontend
+npm run start
+localhost:3000
+---------TAILWIND-----------
+npm i -D tailwindcss : D(devDependencies)
+npx tailwind init
+"./src/**/*.{js,jsx}" //tailwind.config.js
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+extension: Tailwind CSS IntelliSense
+
+----REACT ROUTER DOM-------
+npm i react-router-dom
+
+------REACT ICONS----------
+rnpm i react-icons --save 
+A partir de npm 5: --save no es necesario
+Si deseas evitar que se registre en package.json, debes usar la opción --no-save.
+
+------REACT-TOASTIFY---------------
+$ npm install --save react-toastify
+
+------SWEET-ALERT-----------------
+npm install sweetalert2
+
+
+----------REACT-REDUX------------
+npm install @reduxjs/toolkit react-redux
+
+--------MOMENT API-------------------
+npm install moment //moment en su propia documentacion dicen que son malos xd
+npm i date-fns //es mejor que moment
+ //en all-users(pages) se usa date-fns
+
+ ------Firebase--------
+ ////este es el Firebase para la Web
+//sdk Web
+npm i firebase
+
+//motion library for react
+npm install framer-motion
+
+// sdk de stripe para react
+npm i @stripe/stripe-js
+
+
+
+DATOS:
+localhost:3000 es un servidor en tu máquina local, es decir, un servidor que está corriendo en tu computadora.
