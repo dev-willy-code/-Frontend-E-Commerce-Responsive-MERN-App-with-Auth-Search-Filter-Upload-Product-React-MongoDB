@@ -18,7 +18,9 @@
 .env.development.local
 .env.test.local
 .env.production.local
+# esto lo puse porque algunos nombres de las iamgenes de algunos productos eran muy grandes y habia problemas con vercel
 /src/assest/products
+ 
 
 npm-debug.log*
 yarn-debug.log*

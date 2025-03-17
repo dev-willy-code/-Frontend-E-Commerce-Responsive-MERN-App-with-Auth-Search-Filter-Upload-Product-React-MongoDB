@@ -16,7 +16,7 @@ const SummaryApi = {
     },
     logout_user: {
         url: `${backendDomain}/api/userLogout`,
-        method: "get"
+        method: "post" //se le pone post porque si pongo get hay problemas con las cookies en deployment
     },
 
     //User information
