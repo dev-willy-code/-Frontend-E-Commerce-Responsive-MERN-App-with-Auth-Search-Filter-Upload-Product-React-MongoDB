@@ -21,6 +21,9 @@ const Order = () => {
     useEffect(() => {
         fetchOrderDetails();
     }, [])
+
+    const countryName = new Intl.DisplayNames(["es"], { type: "region" });
+
     return (
         <div>
             {
@@ -70,6 +73,7 @@ const Order = () => {
                                                 <div className='text-lg font-medium'>Payment Details: </div>
                                                 <p className='ml-1'>Payment method: {item.paymentDetails.payment_method_type[0]}</p>
                                                 <p className='ml-1'>Payment Status: {item.paymentDetails.payment_status}</p>
+                                                <p className='ml-1'>Country: {item.country ? countryName.of(item.country) : "Unknown"}</p>
                                             </div>
 
                                             {/* Shipping details */}

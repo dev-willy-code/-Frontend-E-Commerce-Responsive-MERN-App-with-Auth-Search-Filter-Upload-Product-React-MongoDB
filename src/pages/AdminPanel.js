@@ -12,17 +12,17 @@ const AdminPanel = () => {
     const navigate = useNavigate()
     const { fecthUserDetails } = useContext(Context)
     const location = useLocation();
-
+    console.log(user);
 
     useEffect(() => {
         //no hay ROLE.SUPERDAMIN PORQUE SE USA TAMBIEN PARA OPTIONS PARA ACTUALIZAR EL ROL DE LOS USURIROS, Y NO ESTA PERIMITOD CAMBIAR A SUPERADMIN, SI SE PEUDE ARREGLAR PERO LO DEJE ASI
-        if (user?.permisos.puedeAbrirPanelAdmin == false || user == null) {
+        if (user?.permisos.configuracion.puedeAbrirPanelAdmin == false || user == null) {
             navigate("/login")
         }
     }, [user]) //  esto lo pongo porque cuando desde el header se llama fecthUserDetails() , primero se navega , y luego se ejcuta la funcion, por eso coloco user para que se actulaize aca
 
     return (
-        <div className='min-h-[calc(100vh-120px)] md:flex hidden'>
+        <div className='min-h-[calc(100vh-120px)] flex'>
             <aside className='bg-white dark:bg-slate-700 min-h-full w-full max-w-60 customShadow'>
                 <div className='  h-44 flex justify-center items-center flex-col border border-black dark:border-slate-300 rounded-lg m-2 bg-slate-100 dark:bg-slate-600'>
                     <div className='text-6xl cursor-pointer mb-3 '
@@ -54,7 +54,7 @@ const AdminPanel = () => {
                             className={`border-t-2 border-black dark:border-slate-300 px-2 py-1 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 ${location.pathname.includes("all-products") ? "bg-slate-300 dark:bg-slate-500" : "bg-slate-100 dark:bg-slate-400"}`}>
                             All products
                         </Link>
-                        {user?.permisos?.puedeModificarPermisos &&
+                        {user?.permisos?.configuracion?.puedeModificarPermisos &&
                             < Link
                                 to={"user-permissions"}
                                 className={`border-t-2 border-black dark:border-slate-300 px-2 py-1 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 ${location.pathname.includes("user-permissions") ? "bg-slate-300 dark:bg-slate-500" : "bg-slate-100 dark:bg-slate-400"}`}>

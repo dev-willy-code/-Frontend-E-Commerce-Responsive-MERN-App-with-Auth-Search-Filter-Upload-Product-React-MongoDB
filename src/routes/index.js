@@ -8,7 +8,7 @@ import AdminPanel from '../pages/AdminPanel'
 import AllUsers from '../pages/AllUsers'
 import AllProducts from '../pages/AllProducts'
 import UserProfile from '../pages/Profile'
-import PermisosUsuarios from '../pages/PermisosUsuarios'
+import RolePermissionsEditor from '../pages/RolePermissionsEditor'
 import ProfileDashboard from '../pages/ProfileDashboard'
 import PermisosActuales from '../pages/PermisosActuales'
 import ProductsByCategoryFiltered from '../pages/ProductsByCategoryFitered'
@@ -82,7 +82,7 @@ const router = createBrowserRouter([
                     },
                     {
                         path: "user-permissions",
-                        element: <PermisosUsuarios />
+                        element: <RolePermissionsEditor />
                     },
                 ]
             },

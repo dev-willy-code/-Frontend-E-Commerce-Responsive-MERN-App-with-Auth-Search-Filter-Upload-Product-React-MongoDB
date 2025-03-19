@@ -122,9 +122,12 @@ const AllUsers = () => {
     // Filtrar y ordenar usuarios según las opciones seleccionadas
     const filteredAndSortedUsers = filterUsers(sortUsers(allUser, sortOption), filterOption);
 
-    // Definimos el array de roles que el usuario actual PUEDE actualizar
-    const rolesPermitidosActualizar = user?.permisos?.usuarios?.actualizar || [];
-    const rolesPermitidosEliminar = user?.permisos?.usuarios?.eliminar || [];
+    const rolesPermitidosActualizar = Object.keys(user?.permisos?.usuarios?.actualizar || {}).filter(
+        role => user?.permisos?.usuarios?.actualizar[role]
+    );
+    const rolesPermitidosEliminar = Object.keys(user?.permisos?.usuarios?.eliminar || {}).filter(
+        role => user?.permisos?.usuarios?.eliminar[role]
+    );
 
 
     return (
@@ -213,7 +216,7 @@ const AllUsers = () => {
                                                             setUpdateUserDetails(element)
                                                             setOpenUpdateRole(true)
                                                         }}
-                                                            className='bg-green-400 p-2 rounded-full cursor-pointer hover:bg-green-400 transition-colors duration-300 hover:text-white'
+                                                            className='bg-green-400 p-2 rounded-full cursor-pointer hover:bg-green-500 transition-colors duration-300 hover:text-white'
                                                         >
                                                             <MdModeEditOutline className='text-black' />
                                                         </button>
@@ -222,7 +225,7 @@ const AllUsers = () => {
                                                     {/* Mostrar el botón de eliminar si el rol del usuario está en la lista de rolesPermitidosEliminar */}
                                                     {rolesPermitidosEliminar.includes(element.role) && (
                                                         <button onClick={() => { deleteUser(element._id) }}
-                                                            className='bg-red-500 p-2 rounded-full cursor-pointer hover:bg-green-400 transition-colors duration-300 hover:text-white'
+                                                            className='bg-red-500 p-2 rounded-full cursor-pointer hover:bg-red-600 transition-colors duration-300 hover:text-white'
                                                         >
                                                             <MdDelete className='text-white' />
                                                         </button>

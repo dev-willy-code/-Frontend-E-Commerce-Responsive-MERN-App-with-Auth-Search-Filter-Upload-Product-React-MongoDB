@@ -148,7 +148,7 @@ const Header = () => {
                                         <Link onClick={() => { setMenuDisplay(prev => !prev); fecthUserDetails() }} to={"/profile-dashboard/profile"} className=' block text-center whitespace-nowrap hover:bg-slate-100 dark:hover:bg-slate-700 p-1 dark:text-white'>Profile</Link>
                                     </nav>
                                     {
-                                        user?.permisos.puedeAbrirPanelAdmin &&
+                                        user?.permisos.configuracion.puedeAbrirPanelAdmin &&
                                         <nav className='mt-1 border-t border-gray-400'>
                                             <Link onClick={() => { setMenuDisplay(prev => !prev); fecthUserDetails() }} to={"/admin-panel/all-users"} className='  text-center whitespace-nowrap hidden md:block hover:bg-slate-100 dark:hover:bg-slate-700 p-1 dark:text-white'>Admin Panel</Link>
                                         </nav>
