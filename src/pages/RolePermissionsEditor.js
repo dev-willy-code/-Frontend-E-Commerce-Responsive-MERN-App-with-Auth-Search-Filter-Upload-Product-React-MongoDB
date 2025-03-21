@@ -3,6 +3,8 @@ import SummaryApi from "../common";
 import { toast } from 'react-toastify';
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import CreateRole from "../components/CreateRole";
+import DeleteRole from "../components/DeleteUserRole";
 
 export default function RolePermissionsEditor() {
     const [rolesData, setRolesData] = useState([]);
@@ -12,6 +14,10 @@ export default function RolePermissionsEditor() {
     const user = useSelector(state => state.user.user);
     const navigate = useNavigate()
 
+    const [openCreateRole, setOpenCreateRole] = useState(false);
+    const [openDeleteRole, setOpenDeleteRole] = useState(false);
+
+
     useEffect(() => {
         //no hay ROLE.SUPERDAMIN PORQUE SE USA TAMBIEN PARA OPTIONS PARA ACTUALIZAR EL ROL DE LOS USURIROS, Y NO ESTA PERIMITOD CAMBIAR A SUPERADMIN, SI SE PEUDE ARREGLAR PERO LO DEJE ASI
         if (user?.permisos.configuracion.puedeModificarPermisos == false || user == null) {
@@ -19,30 +25,30 @@ export default function RolePermissionsEditor() {
         }
     }, [user]) //  esto lo pongo porque cuando desde el header se llama fecthUserDetails() , primero se navega , y luego se ejcuta la funcion, por eso coloco user para que se actulaize aca
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch(SummaryApi.getRolesPermissions.url, {
-                    method: SummaryApi.getRolesPermissions.method,
-                    credentials: "include"
-                });
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(SummaryApi.getRolesPermissions.url, {
+                method: SummaryApi.getRolesPermissions.method,
+                credentials: "include"
+            });
 
-                const dataResponse = await response.json();
-                if (dataResponse.success) {
-                    setRolesData(dataResponse.data);
-                    setSelectedRole(dataResponse.data[0].role);
-                    setPermissions(dataResponse.data[0].permisos);
-                } else {
-                    toast.error(dataResponse.message);
-                }
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setLoading(false);
+            const dataResponse = await response.json();
+            if (dataResponse.success) {
+                setRolesData(dataResponse.data);
+                setSelectedRole(dataResponse.data[0].role);
+                setPermissions(dataResponse.data[0].permisos);
+            } else {
+                toast.error(dataResponse.message);
             }
-        };
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -104,20 +110,39 @@ export default function RolePermissionsEditor() {
         <>
             {
                 rolesData.length === 0 && !loading ? (<p className="p-3 text-lg font-bold">No se pudo cargar los permisos, intente nuevamente</p>) : (
-                    <div className="p-6 bg-gray-100 min-h-screen" >
-                        <div className="bg-white shadow-md rounded-lg p-4 mb-4">
-                            <h2 className="text-3xl font-bold text-center text-gray-800">Editar permisos</h2 >
+                    <div className="p-6 bg-gray-100 dark:bg-black min-h-screen">
+                        <div className="flex justify-between bg-white shadow-md rounded-lg p-4 mb-4 dark:bg-slate-700">
+                            <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-slate-100">Editar permisos</h2 >
+                            <div className="flex gap-3 w-full max-w-96">
+                                {user?.permisos?.configuracion?.puedeCrearRoles &&
+                                    <button
+                                        onClick={() => { setOpenCreateRole(true) }}
+                                        className="w-full max-w-40 bg-slate-400 text-white font-bold py-2 rounded-lg shadow-md hover:bg-slate-500 transition duration-300"
+                                    >
+                                        Crear nuevo rol
+                                    </button>
+                                }
+                                {user?.permisos?.configuracion?.puedeCrearRoles &&
+                                    <button
+                                        onClick={() => { setOpenDeleteRole(true) }}
+                                        className="w-full max-w-40 bg-red-600 text-white font-bold py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300"
+                                    >
+                                        Eliminar un rol
+                                    </button>
+                                }
+                            </div>
+
                         </div >
 
                         <div className="flex justify-center mb-6">
                             <select
-                                className="w-full max-w-md p-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full max-w-md p-3 bg-white dark:bg-slate-700 dark:text-slate-100 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 value={selectedRole}
                                 onChange={(e) => handleRoleChange(e.target.value)}
                                 disabled={loading}
                             >
                                 {rolesData.map((r) => (
-                                    <option key={r.role} value={r.role}>{r.role}</option>
+                                    <option className="dark:text-slate-100" key={r.role} value={r.role}>{r.role}</option>
                                 ))}
                             </select>
                         </div>
@@ -126,8 +151,8 @@ export default function RolePermissionsEditor() {
                             !loading ? (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     {Object.keys(permissions).map((category) => (
-                                        <div key={category} className="bg-white p-4 rounded-lg shadow-md">
-                                            <h3 className="text-xl font-semibold text-gray-700 mb-3">{category.toUpperCase()}</h3>
+                                        <div key={category} className="bg-white dark:bg-slate-700 p-4 rounded-lg shadow-md">
+                                            <h3 className="text-xl font-semibold text-gray-700 dark:text-slate-100 mb-3">{category.toUpperCase()}</h3>
                                             {Object.entries(permissions[category]).map(([subCategory, value]) => (
                                                 <div key={subCategory} className="mb-2">
                                                     {typeof value === "boolean" ? (
@@ -144,11 +169,11 @@ export default function RolePermissionsEditor() {
                                                                 }))}
                                                                 className="form-checkbox h-5 w-5 text-blue-600"
                                                             />
-                                                            <span className="text-gray-800">{subCategory}</span>
+                                                            <span className="text-gray-800 dark:text-slate-100">{subCategory}</span>
                                                         </label>
                                                     ) : (
                                                         <>
-                                                            <h4 className="text-lg font-medium text-gray-600">{subCategory}</h4>
+                                                            <h4 className="text-lg font-medium text-gray-600 dark:text-slate-300">{subCategory}</h4>
                                                             <div className="pl-4">
                                                                 {Object.keys(value).map((key) => (
                                                                     <label key={key} className="flex items-center space-x-2">
@@ -158,7 +183,7 @@ export default function RolePermissionsEditor() {
                                                                             onChange={() => handleCheckboxChange(category, subCategory, key)}
                                                                             className="form-checkbox h-5 w-5 text-blue-600"
                                                                         />
-                                                                        <span className="text-gray-700">{key}</span>
+                                                                        <span className="text-gray-700 dark:text-slate-100">{key}</span>
                                                                     </label>
                                                                 ))}
                                                             </div>
@@ -184,6 +209,24 @@ export default function RolePermissionsEditor() {
                             </button>
                         </div>
                     </div >
+                )
+            }
+
+            {
+                openCreateRole && (
+                    <CreateRole
+                        onClose={() => setOpenCreateRole(false)}
+                        callFunc={fetchData}
+                    />
+                )
+            }
+
+            {
+                openDeleteRole && (
+                    <DeleteRole
+                        onClose={() => setOpenDeleteRole(false)}
+                        callFunc={fetchData}
+                    />
                 )
             }
         </>

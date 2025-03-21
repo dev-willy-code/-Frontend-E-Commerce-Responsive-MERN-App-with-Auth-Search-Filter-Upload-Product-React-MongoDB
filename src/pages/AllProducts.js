@@ -4,6 +4,8 @@ import SummaryApi from '../common';
 import { useSelector } from 'react-redux';
 import AdminProductCard from '../components/AdminProductCard';
 import useLoading from '../hooks/useLoading';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const AllProducts = () => {
     const user = useSelector(state => state.user.user);
@@ -12,6 +14,15 @@ const AllProducts = () => {
     const [openUploadProduct, setOpenUploladProduct] = useState(false);
     const [allProducts, setAllProducts] = useState([]);
     const { loading, setLoading, dots } = useLoading();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        //no hay ROLE.SUPERDAMIN PORQUE SE USA TAMBIEN PARA OPTIONS PARA ACTUALIZAR EL ROL DE LOS USURIROS, Y NO ESTA PERIMITOD CAMBIAR A SUPERADMIN, SI SE PEUDE ARREGLAR PERO LO DEJE ASI
+        if (user?.permisos.productos.listar == false || user == null) {
+            navigate("/")
+        }
+    }, [user]) //  esto lo pongo porque cuando desde el header se llama fecthUserDetails() , primero se navega , y luego se ejcuta la funcion, por eso coloco user para que se actulaize aca
+
 
 
     const fetchAllProducts = async () => {
@@ -26,7 +37,12 @@ const AllProducts = () => {
 
 
             console.log("products data: ", dataResponse);
-            setAllProducts(dataResponse?.data);
+
+            if (dataResponse.success) {
+                setAllProducts(dataResponse?.data);
+            } else {
+                toast.error(dataResponse.message);
+            }
         } catch (error) {
             console.log("Error AllProducts Page: ", error);
         } finally {

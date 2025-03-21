@@ -1,26 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import SummaryApi from '../common';
+import { toast } from 'react-toastify';
 import { format, parseISO } from 'date-fns';
 import displayINRCurrency from '../helpers/displayCurrency';
 
-const Order = () => {
+const AllOrder = () => {
+
     const [data, setData] = useState([]);
+
     const fetchOrderDetails = async () => {
-        const response = await fetch(SummaryApi.orderList.url, {
-            method: SummaryApi.orderList.method,
+        const response = await fetch(SummaryApi.allOrder.url, {
+            method: SummaryApi.allOrder.method,
             credentials: 'include'
         })
 
-        const responseData = await response.json();
-        if (responseData.success)
-            setData(responseData.data)
+        const dataResponse = await response.json();
 
-        console.log("order-list: ", responseData);
+        if (dataResponse.success) {
+            setData(dataResponse.data);
+        } else {
+            toast.error(dataResponse.message);
+        }
+
+        console.log("All orders", dataResponse)
     }
 
     useEffect(() => {
-        fetchOrderDetails();
+        fetchOrderDetails()
     }, [])
+
 
     const countryName = new Intl.DisplayNames(["es"], { type: "region" });
 
@@ -85,6 +93,26 @@ const Order = () => {
                                                 }
                                             </div>
                                         </div>
+
+                                        <div className='flex flex-col gap-4 p-2 min-w-[300px]'>
+                                            {/* Payment details */}
+                                            <div>
+                                                <div className='text-lg font-medium'>Card Details: </div>
+                                                <p className='ml-1'>Country: {item.card_details.country}</p>
+                                                <p className='ml-1'>Brand: {item.card_details.display_brand}</p>
+                                                <p className='ml-1'>Funding: {item.card_details.funding}</p>
+                                                <p className='ml-1'>Number card: **** **** **** {item.card_details.last4}</p>
+                                                <p className='ml-1'>Regulated Status: {item.card_details.regulated_status}</p>
+                                            </div>
+
+                                            {/* Shipping details */}
+                                            <div>
+                                                <div className='text-lg font-medium'>Shipping Details: </div>
+                                                {
+                                                    <p className='ml-1'>Shipping Amount: {displayINRCurrency(item.shipping_options[0].shipping_amount)} </p>
+                                                }
+                                            </div>
+                                        </div>
                                     </div>
 
                                     {/* Total Amount*/}
@@ -103,4 +131,4 @@ const Order = () => {
     )
 }
 
-export default Order
+export default AllOrder

@@ -279,11 +279,11 @@ const ProductDetails = () => {
             toast.error("Failed to delete review.");
         }
     };
-
     const handleFetchReviews = async () => {
         try {
             setLoadingReviews(true);
             const url = `${SummaryApi.getProductReviews.url}/${encodeURIComponent(params?.id)}`;
+            console.log("url: ", url);
             const response = await fetch(url, {
                 method: SummaryApi.getProductReviews.method,
             })
@@ -291,9 +291,7 @@ const ProductDetails = () => {
             const dataResponse = await response.json();
             if (dataResponse.success) {
                 setReviews(dataResponse?.data); // reviews del producto
-                if (reviews.lenght > 0) {
-                    setShowReviews(true); //abre el modal para mostrar los reviews del producto
-                }
+                setShowReviews(true); // mostrar los reviews
             } else if (dataResponse.error) {
                 toast.error(dataResponse.message, {
                     position: "bottom-center",
@@ -312,9 +310,6 @@ const ProductDetails = () => {
         }
     }
 
-    useEffect(() => {
-        handleFetchReviews();
-    }, [params])
 
 
 
@@ -531,20 +526,22 @@ const ProductDetails = () => {
                             <h2 className='text-2xl lg:text-4xl font-medium text-slate-400  '>{data?.productName}</h2>
                             <p className='capitalize text-slate-400 dark:text-slate-100'>{data?.categoryId.value}</p>
                             <div className='flex gap-3 text-yellow-600 text-lg items-center'>
-                                <StarRatingAverage rating={starRatingReview} />
 
-                                <p className='font-bold'>{starRatingReview}</p>
+                                <div className='flex gap-2 items-center mb-4'>
+                                    <StarRatingAverage rating={starRatingReview} />
+                                    <p className='font-bold'>{starRatingReview}</p>
+                                </div>
 
-                                {/* Mostrar el botón solo si hay reviews */}
-                                {reviews.length > 0 && (
-                                    <button
-                                        onClick={() => setShowReviews(true)}
-                                        disabled={loadingReviews}
-                                        className="mb-4 px-6 py-2 text-white bg-blue-600 dark:bg-blue-500 rounded-lg shadow-md hover:bg-blue-700 dark:hover:bg-blue-400 transition"
-                                    >
-                                        {loadingReviews ? "Cargando..." : "Mostrar Reviews"}
-                                    </button>
-                                )}
+
+                                {/* Mostrar el botón para msotrar todos los reviews del producto */}
+                                <button
+                                    onClick={() => { handleFetchReviews() }}
+                                    disabled={loadingReviews}
+                                    className="mb-4 px-6 py-2 text-white bg-slate-400 dark:bg-blue-500 rounded-lg shadow-md hover:bg-blue-700 dark:hover:bg-blue-400 transition"
+                                >
+                                    {loadingReviews ? "Loading..." : "Mostrar Reviews"}
+                                </button>
+
 
                                 {showReviews && (
                                     <div className=" z-30 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">

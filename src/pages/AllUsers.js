@@ -131,14 +131,14 @@ const AllUsers = () => {
 
 
     return (
-        <div className='m-2 p-1 bg-white dark:bg-slate-700'>
+        <div className='m-2 p-2 bg-white dark:bg-slate-700'>
 
-            <div className="mb-4">
+            <div className="mx-4 my-6">
                 {/* Filtro por Rol */}
                 <label htmlFor="filter-role" className="mr-2 dark:text-slate-100">Filter by Role:</label>
                 <select
                     id="filter-role"
-                    className="p-2 border rounded bg-slate-500 dark:text-white"
+                    className="p-2 border rounded dark:bg-slate-500 dark:text-white"
                     onChange={(e) => setFilterOption(e.target.value)}
                     value={filterOption}
                 >
@@ -152,7 +152,7 @@ const AllUsers = () => {
                 <label htmlFor="sort-option" className="ml-4 mr-2 dark:text-slate-100">Sort by:</label>
                 <select
                     id="sort-option"
-                    className="p-2 border rounded bg-slate-500 dark:text-white"
+                    className="p-2 border rounded dark:bg-slate-500 dark:text-white"
                     onChange={(e) => setSortOption(e.target.value)}
                     value={sortOption}
                 >

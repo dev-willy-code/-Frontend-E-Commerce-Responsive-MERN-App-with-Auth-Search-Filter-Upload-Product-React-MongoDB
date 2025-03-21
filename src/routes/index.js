@@ -18,6 +18,7 @@ import SearchProduct from '../pages/SearchProduct'
 import Success from '../pages/Success';
 import Cancel from '../pages/Cancel';
 import Order from '../pages/Order'
+import AllOrder from '../pages/AllOrder'
 
 const router = createBrowserRouter([
     {
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
                     {
                         path: "user-permissions",
                         element: <RolePermissionsEditor />
+                    },
+                    {
+                        path: "all-order",
+                        element: <AllOrder />
                     },
                 ]
             },

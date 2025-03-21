@@ -49,6 +49,15 @@ const SummaryApi = {
         url: `${backendDomain}/api/role-permissions`,
         method: "put"
     },
+    createRole: {
+        url: `${backendDomain}/api/create-role`,
+        method: "post"
+    },
+    deleteRole: {
+        url: `${backendDomain}/api/delete-role`,
+        method: "delete"
+    },
+
 
     //profile
     updateProfile: {
@@ -159,8 +168,12 @@ const SummaryApi = {
         url: `${backendDomain}/api/checkout`,
         method: 'post'
     },
-    orderList: { // para realizar el pago con stripe
+    orderList: { // para las ordenes del usuario logueado
         url: `${backendDomain}/api/order-list`,
+        method: 'get'
+    },
+    allOrder: { // trae todas las ordenes
+        url: `${backendDomain}/api/all-order`,
         method: 'get'
     },
 

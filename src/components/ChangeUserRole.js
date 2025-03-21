@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import ROLE from '../common/role'
+// import ROLE from '../common/role'
 import { IoCloseCircleOutline } from "react-icons/io5";
 import SummaryApi from '../common';
 import { toast } from 'react-toastify';
 import useLoading from '../hooks/useLoading';
+import useRoles from '../common/role';
 
 const ChangeUserRole = ({
     onClose,
@@ -19,6 +20,8 @@ const ChangeUserRole = ({
     })
     const { loading, setLoading, dots } = useLoading();
 
+    const { roles, loadingRoles } = useRoles();
+    console.log("roles: ", roles);
 
     //Sin useEffect: El cambio de estado(useState) dispara un re-render, y en ese nuevo render se vuelve a ejecutar la misma línea, lo que provoca un bucle sin fin.
     // Usar useEffect para solo actualizar el estado una vez al montar el componente
@@ -101,34 +104,36 @@ const ChangeUserRole = ({
                 <button className='block ml-auto text-3xl' onClick={onClose}>
                     <IoCloseCircleOutline />
                 </button>
-                <h1 className='pb-4 text-lg font-medium'>Change User Role</h1>
-                <p>Name: {name}</p>
-                <p>Email: {email}</p>
-                <div className='flex items-center gap-6 my-4'>
-                    <p>Role: </p>
-                    <select onChange={handleOnChange} value={data.role} name='role' className='border px-4 py-1'>
-                        {
-                            Object.values(ROLE).map(el => {
-                                return (
-                                    // El uso de key en el map asegura que React pueda identificar y manejar de manera eficiente cada opción en el <select>.
-                                    <option key={el} value={el}>{el}</option>
-                                )
-                            })
-                        }
-                    </select>
-                </div>
-                <button onClick={updateUserRole}
-                    className='w-fit mx-auto block border rounded-3xl py-1 px-3 bg-red-500 text-white hover:bg-red-700 transition-all duration-300'>
-                    {
-                        loading ? (
-                            <span className="flex items-center">
-                                <p>Processing</p>
-                                <p className='ml-[2px] animate-pulse'>{dots}</p>
-                            </span>
-                        ) : ("Change Role")
-                    }
-                </button>
-
+                {
+                    loadingRoles ? (<p className='text-center font-bold'>Loading roles...</p>) : (
+                        <>
+                            <h1 className='pb-4 text-lg font-medium'>Change User Role</h1>
+                            <p>Name: {name}</p>
+                            <p>Email: {email}</p>
+                            <div className='flex items-center gap-6 my-4'>
+                                <p>Role: </p>
+                                <select onChange={handleOnChange} value={data.role} name='role' className='border px-4 py-1'>
+                                    {
+                                        roles?.map(role => (
+                                            <option key={role} value={role}>{role}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+                            <button onClick={updateUserRole}
+                                className='w-fit mx-auto block border rounded-3xl py-1 px-3 bg-red-500 text-white hover:bg-red-700 transition-all duration-300'>
+                                {
+                                    loading ? (
+                                        <span className="flex items-center">
+                                            <p>Processing</p>
+                                            <p className='ml-[2px] animate-pulse'>{dots}</p>
+                                        </span>
+                                    ) : ("Change Role")
+                                }
+                            </button>
+                        </>
+                    )
+                }
             </div>
         </div>
     )

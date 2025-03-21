@@ -21,6 +21,8 @@ const AdminPanel = () => {
         }
     }, [user]) //  esto lo pongo porque cuando desde el header se llama fecthUserDetails() , primero se navega , y luego se ejcuta la funcion, por eso coloco user para que se actulaize aca
 
+
+
     return (
         <div className='min-h-[calc(100vh-120px)] flex'>
             <aside className='bg-white dark:bg-slate-700 min-h-full w-full max-w-60 customShadow'>
@@ -42,23 +44,44 @@ const AdminPanel = () => {
                 {/* Navigation */}
                 <div className='mt-4 '>
                     <nav className='grid border border-black dark:border-slate-300 m-2 rounded-lg overflow-hidden'>
-                        <Link
-                            to={"all-users"}
-                            onClick={() => { fecthUserDetails() }}
-                            className={`px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 dark:text-white ${location.pathname.includes("all-users") ? "bg-slate-300 dark:bg-slate-500" : "bg-slate-100 dark:bg-slate-400"}`}>
-                            All Users
-                        </Link>
-                        <Link
-                            to={"all-products"}
-                            onClick={() => { fecthUserDetails() }}
-                            className={`border-t-2 border-black dark:border-slate-300 px-2 py-1 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 ${location.pathname.includes("all-products") ? "bg-slate-300 dark:bg-slate-500" : "bg-slate-100 dark:bg-slate-400"}`}>
-                            All products
-                        </Link>
+                        {Object.values(user?.permisos?.usuarios?.listar || {}).some(permiso => permiso) && (
+                            <Link
+                                to={"all-users"}
+                                //si no pongo esto entonces si el superadmin quita permisos de (usuarios.listar), aparecera un mensaje de error("no puedes ver usuarios"),
+                                //con esto redireccionara a la pagina principal, que es mejor, aunque estamos ahciendo fecth, lo cual consume mas recursos
+                                onClick={() => { fecthUserDetails() }}
+                                className={`px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 dark:text-white ${location.pathname.includes("all-users") ? "bg-slate-300 dark:bg-slate-500" : "bg-slate-100 dark:bg-slate-400"}`}>
+                                All Users
+                            </Link>
+                        )}
+                        {user?.permisos?.productos?.listar &&
+                            <Link
+                                to={"all-products"}
+                                //si no pongo esto entonces si el superadmin quita permisos de (productos.listar), aparecera un mensaje de error("no puedes ver prodcutos"),
+                                //con esto redireccionara a la pagina principal, que es mejor, aunque estamos ahciendo fecth, lo cual consume mas recursos
+                                onClick={() => { fecthUserDetails() }}
+                                className={`border-t-2 border-black dark:border-slate-300 px-2 py-1 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 ${location.pathname.includes("all-products") ? "bg-slate-300 dark:bg-slate-500" : "bg-slate-100 dark:bg-slate-400"}`}>
+                                All products
+                            </Link>
+                        }
                         {user?.permisos?.configuracion?.puedeModificarPermisos &&
                             < Link
                                 to={"user-permissions"}
+                                //si no pongo esto entonces si el superadmin quita permisos de (puedeModificarPermisos), aparecera un mensaje de error("no puedes ver permisos"),
+                                //con esto redireccionara a la apgina principal, que es mejor, aunque estmaos ahciendo fecth, lo cual consume mas recursos
+                                onClick={() => { fecthUserDetails() }}
                                 className={`border-t-2 border-black dark:border-slate-300 px-2 py-1 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 ${location.pathname.includes("user-permissions") ? "bg-slate-300 dark:bg-slate-500" : "bg-slate-100 dark:bg-slate-400"}`}>
                                 User permissions
+                            </Link>
+                        }
+                        {user?.permisos?.configuracion?.puedeVerOrdenes_Pagos &&
+                            <Link
+                                to={"all-order"}
+                                //si no pongo esto entonces si el superadmin quita permisos de (puedeModificarPermisos), aparecera un mensaje de error("no puedes ver permisos"),
+                                //con esto redireccionara a la apgina principal, que es mejor, aunque estmaos ahciendo fecth, lo cual consume mas recursos
+                                onClick={() => { fecthUserDetails() }}
+                                className={`border-t-2 border-black dark:border-slate-300 px-2 py-1 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 ${location.pathname.includes("all-order") ? "bg-slate-300 dark:bg-slate-500" : "bg-slate-100 dark:bg-slate-400"}`}>
+                                All Orders
                             </Link>
                         }
                     </nav>
